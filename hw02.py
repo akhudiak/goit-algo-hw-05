@@ -1,10 +1,11 @@
 import re
+from decimal import Decimal
 from typing import Callable, Generator
 
 
 def generator_numbers(text: str) -> Generator:
     for match in re.finditer(r"\d+\.\d{2}", text):
-        yield float(match.group())
+        yield Decimal(match.group())
 
 
 def sum_profit(text: str, find_nums_func: Callable):
