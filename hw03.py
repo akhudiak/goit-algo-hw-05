@@ -1,5 +1,4 @@
 from collections import defaultdict
-from datetime import date, time, datetime
 from sys import argv
 from pathlib import Path
 
@@ -23,7 +22,7 @@ def load_logs(file_path: str) -> list:
 
 
 def filter_logs_by_level(logs: list, level: str) -> filter:
-    return filter(lambda log: log["level"].lower() == level, logs)
+    return filter(lambda log: log["level"] == level, logs)
 
 
 def count_logs_by_level(logs: list) -> defaultdict:
@@ -54,19 +53,26 @@ def display_log_counts(counter: dict):
         print(f"{log:<{width_col1}} {vert_sep} {count:<{width_col2}}")
 
 
+def display_log_details(logs: list, level: str):
+
+    print(f"\nДеталі логів для рівня '{level}':")
+
+    for log in filter_logs_by_level(logs, level):
+        print(f'{log["date"]} {log["time"]} - {log["info"]}')
+
+
 def main():
 
-    path_to_file = Path(argv[1])
-    logs = load_logs(path_to_file)
-    display_log_counts(count_logs_by_level(logs))
-
-    if len(argv) > 2:
-
-        level = argv[2].lower()
-        print(f"\nДеталі логів для рівня '{level.upper()}':")
-
-        for log in filter_logs_by_level(logs, level):
-            print(f'{log["date"]} {log["time"]} - {log["info"]}')
+    try:
+        path_to_file = Path(argv[1])
+        logs = load_logs(path_to_file)
+        display_log_counts(count_logs_by_level(logs))
+        if len(argv) > 2:
+            display_log_details(logs, argv[2].upper())
+    except FileNotFoundError as error:
+        print(error)
+    except IndexError:
+        print("[Error] There is an error while reading file")
 
 
 if __name__ == "__main__":
