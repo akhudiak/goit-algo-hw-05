@@ -4,8 +4,8 @@ from typing import Callable, Generator
 
 
 def generator_numbers(text: str) -> Generator:
-    """Генерує числа з двома знаками після коми у вигляді Decimal з переданого тексту."""
-    for match in re.finditer(r" (\d+\.\d{2}) ", text):
+    """Генерує числа у вигляді Decimal з переданого тексту."""
+    for match in re.finditer(r" (\d+\.\d+) ", text):
         yield Decimal(match.group())
 
 
