@@ -19,7 +19,7 @@ def input_error(func):
 def parse_input(user_input: str):
     cmd, *args = user_input.split(" ")
     cmd = cmd.strip().lower()
-    return cmd, *args
+    return cmd, args
 
 
 @input_error
@@ -53,7 +53,7 @@ def main():
     print("Welcome to the assistant bot!")
     while True:
         user_input = input(">>> ")
-        command, *args = parse_input(user_input)
+        command, args = parse_input(user_input)
 
         if command in ["close", "exit"]:
             print("Good bye!")
